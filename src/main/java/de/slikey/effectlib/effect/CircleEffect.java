@@ -7,6 +7,7 @@ import org.bukkit.util.Vector;
 import de.slikey.effectlib.Effect;
 import de.slikey.effectlib.EffectType;
 import de.slikey.effectlib.EffectManager;
+import de.slikey.effectlib.util.MathUtils;
 import de.slikey.effectlib.util.VectorUtils;
 
 public class CircleEffect extends Effect {
@@ -106,13 +107,15 @@ public class CircleEffect extends Effect {
             v.setX(Math.cos(angle) * radius);
             v.setZ(Math.sin(angle) * radius);
             VectorUtils.rotateVector(v, xRotation, yRotation, zRotation);
+            VectorUtils.rotateAroundAxisX(v, (location.getPitch() + 90) * MathUtils.degreesToRadians);
+            VectorUtils.rotateAroundAxisY(v, -location.getYaw() * MathUtils.degreesToRadians);
             if (enableRotation) {
                 VectorUtils.rotateVector(v, angularVelocityX * step, angularVelocityY * step, angularVelocityZ * step);
             }
             if (orient) {
-                 v = VectorUtils.rotateVector(v, location);
+                v = VectorUtils.rotateVector(v, location);
             }
-            display(particle, location.clone().add(v), 0, 30);
+            display(particle, location.clone().add(v));
             step++;
         }
         if (resetCircle) {
