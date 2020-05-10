@@ -203,7 +203,7 @@ public abstract class Effect implements Runnable {
             throw new IllegalArgumentException("EffectManager cannot be null!");
         }
         this.effectManager = effectManager;
-        this.visibleRange = effectManager.getParticleRange();
+        visibleRange = effectManager.getParticleRange();
     }
 
     public final void cancel() {
@@ -211,11 +211,8 @@ public abstract class Effect implements Runnable {
     }
 
     public final void cancel(boolean callback) {
-        if (callback) {
-            done();
-        } else {
-            done = true;
-        }
+        if (callback) done();
+        else done = true;
     }
 
     public final boolean isDone() {
@@ -236,9 +233,8 @@ public abstract class Effect implements Runnable {
             cancel();
             return;
         }
-        if (done) {
-            return;
-        }
+        if (done) return;
+
         try {
             if (RandomUtils.checkProbability(probability)) {
                 onRun();
@@ -247,14 +243,11 @@ public abstract class Effect implements Runnable {
             done();
             effectManager.onError(ex);
         }
+
         if (type == EffectType.REPEATING) {
-            if (iterations == -1) {
-                return;
-            }
+            if (iterations == -1) return;
             iterations--;
-            if (iterations < 1) {
-                done();
-            }
+            if (iterations < 1) done();
         } else {
             done();
         }
@@ -265,7 +258,7 @@ public abstract class Effect implements Runnable {
      * state can be reset.
      */
     protected void reset() {
-        this.done = false;
+        done = false;
     }
 
     public void prepare() {
@@ -331,17 +324,13 @@ public abstract class Effect implements Runnable {
      * Set the Location this Effect is centered on.
      */
     public void setDynamicOrigin(DynamicLocation location) {
-        if (location == null) {
-            throw new IllegalArgumentException("Origin Location cannot be null!");
-        }
+        if (location == null) throw new IllegalArgumentException("Origin Location cannot be null!");
         origin = location;
 
-        if (offset != null) {
-            origin.addOffset(offset);
-        }
-        if (relativeOffset != null) {
-            origin.addRelativeOffset(relativeOffset);
-        }
+        if (offset != null) origin.addOffset(offset);
+
+        if (relativeOffset != null) origin.addRelativeOffset(relativeOffset);
+
         origin.setDirectionOffset(yawOffset, pitchOffset);
         origin.setYaw(yaw);
         origin.setPitch(pitch);
@@ -355,9 +344,7 @@ public abstract class Effect implements Runnable {
      */
     public void setDynamicTarget(DynamicLocation location) {
         target = location;
-        if (target != null && targetOffset != null) {
-            target.addOffset(targetOffset);
-        }
+        if (target != null && targetOffset != null) target.addOffset(targetOffset);
         if (target != null) {
             target.setUpdateLocation(updateLocations);
             target.setUpdateDirection(updateDirections);
@@ -366,21 +353,14 @@ public abstract class Effect implements Runnable {
 
     protected final boolean validate() {
         // Check if the origin and target entities are present
-        if (disappearWithOriginEntity && (origin != null && !origin.hasValidEntity())) {
-            return false;
-        }
-        
-        if (disappearWithTargetEntity && (target != null && !target.hasValidEntity())) {
-            return false;
-        }
-        
+        if (disappearWithOriginEntity && (origin != null && !origin.hasValidEntity())) return false;
+        if (disappearWithTargetEntity && (target != null && !target.hasValidEntity())) return false;
+
         // Check for a valid Location
         updateLocation();
         updateTarget();
         Location location = getLocation();
-        if (location == null) {
-            return false;
-        }
+        if (location == null) return false;
         if (autoOrient) {
             Location targetLocation = target == null ? null : target.getLocation();
             if (targetLocation != null) {
@@ -395,24 +375,18 @@ public abstract class Effect implements Runnable {
 
     protected void updateDuration() {
         if (duration != null) {
-            if (period < 1) {
-                period = 1;
-            }
+            if (period < 1) period = 1;
             iterations = duration / period / 50;
         }
         maxIterations = iterations;
     }
 
     protected void updateLocation() {
-        if (origin != null) {
-            origin.update();
-        }
+        if (origin != null) origin.update();
     }
 
     protected void updateTarget() {
-        if (target != null) {
-            target.update();
-        }
+        if (target != null) target.update();
     }
 
     protected void display(Particle effect, Location location) {
@@ -429,7 +403,7 @@ public abstract class Effect implements Runnable {
 
     protected void display(Particle particle, Location location, Color color, float speed, int amount) {
         if (targetPlayers == null && targetPlayer != null) {
-            targetPlayers = new ArrayList<Player>();
+            targetPlayers = new ArrayList<>();
             targetPlayers.add(targetPlayer);
         }
         effectManager.display(particle, location, particleOffsetX, particleOffsetY, particleOffsetZ, speed, amount,
@@ -475,11 +449,11 @@ public abstract class Effect implements Runnable {
     }
 
     public Player getTargetPlayer() {
-    	return this.targetPlayer;
+    	return targetPlayer;
     }
 
     public void setTargetPlayer(Player p) {
-    	this.targetPlayer = p;
+    	targetPlayer = p;
     }
 
 }
