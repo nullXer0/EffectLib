@@ -218,7 +218,7 @@ public class EffectManager implements Disposable {
 
         return effect;
     }
-    
+
     public Effect getEffect(String effectClass, ConfigurationSection parameters, DynamicLocation origin, DynamicLocation target, ConfigurationSection parameterMap, Player targetPlayer, String logContext) {
         Effect effect = getEffectByClassName(effectClass);
         if (effect == null) return null;
@@ -253,7 +253,7 @@ public class EffectManager implements Disposable {
 
         return effect;
     }
-    
+
     @Deprecated
     public Effect start(String effectClass, ConfigurationSection parameters, DynamicLocation origin, DynamicLocation target, Map<String, String> parameterMap, Player targetPlayer) {
         ConfigurationSection configMap = null;
@@ -261,7 +261,7 @@ public class EffectManager implements Disposable {
 
         return start(effectClass, parameters, origin, target, configMap, targetPlayer);
     }
-    
+
     /**
      * Start an effect, possibly using parameter replacement.
      *
@@ -298,7 +298,7 @@ public class EffectManager implements Disposable {
     public boolean isDebugEnabled() {
         return debug;
     }
-    
+
     public void onError(Throwable ex) {
         getLogger().log(Level.SEVERE, "Unexpected EffectLib Error: " + ex.getMessage(), ex);
     }
@@ -330,7 +330,7 @@ public class EffectManager implements Disposable {
     public int getParticleRange() {
         return visibleRange;
     }
-    
+
     public void setParticleRange(int range) {
         visibleRange = range;
     }
@@ -354,6 +354,9 @@ public class EffectManager implements Disposable {
         if (disposed) return;
         disposed = true;
         cancel(false);
+        display = null;
+        imageCache = null;
+        imageCacheFolder = null;
         if (effectManagers != null) effectManagers.remove(this);
     }
     
