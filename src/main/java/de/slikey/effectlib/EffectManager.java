@@ -49,9 +49,9 @@ public class EffectManager implements Disposable {
 
     private static List<EffectManager> effectManagers;
     private static Map<String, Class<? extends Effect>> effectClasses = new HashMap<>();
-    private final Plugin owningPlugin;
-    private final Logger logger;
-    private final Map<Effect, BukkitTask> effects;
+    private Plugin owningPlugin;
+    private Logger logger;
+    private Map<Effect, BukkitTask> effects;
     private ParticleDisplay display;
     private boolean disposed;
     private boolean disposeOnTermination;
@@ -59,7 +59,7 @@ public class EffectManager implements Disposable {
     private boolean stackTraces = true;
     private int visibleRange = 32;
     private File imageCacheFolder;
-    private Map<String, BufferedImage[]> imageCache = new HashMap<>();
+    private Map<String, BufferedImage[]> imageCache;
 
     public EffectManager(Plugin owningPlugin) {
         this(owningPlugin, owningPlugin.getLogger());
@@ -70,6 +70,7 @@ public class EffectManager implements Disposable {
             throw new IllegalArgumentException("EffectManager must be given a valid owning plugin");
         }
         imageCacheFolder = new File(owningPlugin.getDataFolder(), "imagecache");
+        imageCache = new HashMap<>();
         this.owningPlugin = owningPlugin;
         this.logger = logger;
         effects = new HashMap<>();
@@ -354,8 +355,12 @@ public class EffectManager implements Disposable {
         if (disposed) return;
         disposed = true;
         cancel(false);
+        effects = null;
+        owningPlugin = null;
+        logger = null;
         display = null;
         imageCache = null;
+        owningPlugin = null;
         imageCacheFolder = null;
         if (effectManagers != null) effectManagers.remove(this);
     }
