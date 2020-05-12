@@ -75,6 +75,7 @@ public class EffectManager implements Disposable {
         effects = new HashMap<>();
         disposed = false;
         disposeOnTermination = false;
+        effectManagers.add(this);
     }
 
     public static void initialize() {
