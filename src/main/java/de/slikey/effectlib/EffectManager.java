@@ -288,6 +288,14 @@ public class EffectManager implements Disposable {
         }
     }
 
+    public boolean isDisposed() {
+        return disposed;
+    }
+
+    public boolean isDisposedOnTermination() {
+        return disposeOnTermination;
+    }
+
     public void enableDebug(boolean enable) {
         debug = enable;
     }
