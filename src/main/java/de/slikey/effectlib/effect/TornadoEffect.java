@@ -114,9 +114,7 @@ public class TornadoEffect extends Effect {
             }
             for (Vector v : createCircle(y, fr)) {
                 if (showTornado) {
-                    if (circleHeight > 0) {
-                        v.setY(v.getY() + RandomUtils.random.nextDouble() * circleHeight / 2 - circleHeight / 2);
-                    }
+                    if (circleHeight > 0) v.setY(v.getY() + RandomUtils.random.nextDouble() * circleHeight / 2 - circleHeight / 2);
                     display(tornadoParticle, t.add(v), tornadoColor);
                     t.subtract(v);
                     step++;
@@ -127,7 +125,7 @@ public class TornadoEffect extends Effect {
     }
 
     public List<Vector> createCircle(double y, double radius) {
-        double amount = radius * 64;
+        double amount = radius * circleParticles;
         double inc = (2 * Math.PI) / amount;
         List<Vector> vecs = new ArrayList<Vector>();
         for (int i = 0; i < amount; i++) {

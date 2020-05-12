@@ -13,8 +13,9 @@ import org.bukkit.util.Vector;
 import com.google.common.base.CaseFormat;
 
 import de.slikey.effectlib.Effect;
-import de.slikey.effectlib.EffectManager;
 import de.slikey.effectlib.EffectType;
+import de.slikey.effectlib.EffectManager;
+import de.slikey.effectlib.util.VectorUtils;
 import de.slikey.effectlib.math.EquationStore;
 import de.slikey.effectlib.math.EquationTransform;
 import de.slikey.effectlib.util.VectorUtils;
@@ -78,11 +79,11 @@ public class ModifiedEffect extends Effect {
     /**
      * Effect parameters to modify each tick, paired with an equation used to modify them.
      */
-    public Map<String, String> parameters = new HashMap<String, String>();
+    public Map<String, String> parameters = new HashMap<>();
 
     private boolean initialized = false;
     private Effect innerEffect;
-    private Map<Field, EquationTransform> parameterTransforms = new HashMap<Field, EquationTransform>();
+    private Map<Field, EquationTransform> parameterTransforms = new HashMap<>();
     private int step = 0;
 
     private EquationTransform xTransform;
@@ -99,17 +100,13 @@ public class ModifiedEffect extends Effect {
 
     @Override
     public void reset() {
-        this.step = 0;
-        if (innerEffect != null) {
-            innerEffect.prepare();
-        }
+        step = 0;
+        if (innerEffect != null) innerEffect.prepare();
     }
 
     @Override
     public void onDone() {
-        if (innerEffect != null) {
-            innerEffect.onDone();
-        }
+        if (innerEffect != null) innerEffect.onDone();
     }
 
     @Override
@@ -122,9 +119,8 @@ public class ModifiedEffect extends Effect {
                 return;
             }
 
-            if (effectClass == null) {
-                effectClass = effect.getString("class");
-            }
+            if (effectClass == null) effectClass = effect.getString("class");
+
             if (effectClass == null) {
                 effectManager.onError("ModifiedEffect missing inner effect class property");
                 cancel();
@@ -182,18 +178,12 @@ public class ModifiedEffect extends Effect {
                 zTransform == null ? 0 : zTransform.get(step, maxIterations, variableA, variableB)
             );
 
-            if (previousOffset != null) {
-                offset.subtract(previousOffset);
-            } else {
-                previousOffset = new Vector();
-            }
+            if (previousOffset != null) offset.subtract(previousOffset);
+            else previousOffset = new Vector();
 
             Location location = getLocation();
-            if (orient && orientPitch) {
-                offset = VectorUtils.rotateVector(offset, location);
-            } else if (orient) {
-                offset = VectorUtils.rotateVector(offset, location.getYaw(), 0);
-            }
+            if (orient && orientPitch) offset = VectorUtils.rotateVector(offset, location);
+            else if (orient) offset = VectorUtils.rotateVector(offset, location.getYaw(), 0);
 
             origin.addOffset(offset);
             previousOffset.add(offset);
@@ -204,15 +194,15 @@ public class ModifiedEffect extends Effect {
             try {
                 Field field = entry.getKey();
                 if (field.getType().equals(Double.class) || field.getType().equals(Double.TYPE)) {
-                    entry.getKey().set(innerEffect,value);
+                    entry.getKey().set(innerEffect, value);
                 } else if (field.getType().equals(Integer.class) || field.getType().equals(Integer.TYPE)) {
-                    entry.getKey().set(innerEffect, (int)value);
+                    entry.getKey().set(innerEffect, (int) value);
                 } else if (field.getType().equals(Float.class) || field.getType().equals(Float.TYPE)) {
-                    entry.getKey().set(innerEffect, (float)value);
+                    entry.getKey().set(innerEffect, (float) value);
                 } else if (field.getType().equals(Short.class) || field.getType().equals(Short.TYPE)) {
-                    entry.getKey().set(innerEffect, (short)value);
+                    entry.getKey().set(innerEffect, (short) value);
                 } else if (field.getType().equals(Byte.class) || field.getType().equals(Byte.TYPE)) {
-                    entry.getKey().set(innerEffect, (byte)value);
+                    entry.getKey().set(innerEffect, (byte) value);
                 } else {
                     effectManager.onError("Can't assign property " + entry.getKey().getName() + " of effect class " + effectClass + " of type " + field.getType().getName());
                     cancel();
@@ -233,4 +223,5 @@ public class ModifiedEffect extends Effect {
         }
         step++;
     }
+
 }

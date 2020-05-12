@@ -1,14 +1,15 @@
 package de.slikey.effectlib.effect;
 
-import de.slikey.effectlib.Effect;
-import de.slikey.effectlib.EffectManager;
-import de.slikey.effectlib.EffectType;
-import org.bukkit.Particle;
-import de.slikey.effectlib.util.RandomUtils;
-import de.slikey.effectlib.util.VectorUtils;
 import org.bukkit.Color;
 import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.util.Vector;
+
+import de.slikey.effectlib.Effect;
+import de.slikey.effectlib.EffectType;
+import de.slikey.effectlib.EffectManager;
+import de.slikey.effectlib.util.RandomUtils;
+import de.slikey.effectlib.util.VectorUtils;
 
 public class AtomEffect extends Effect {
 
@@ -78,7 +79,7 @@ public class AtomEffect extends Effect {
 
     @Override
     public void reset() {
-        this.step = 0;
+        step = 0;
     }
 
     @Override
@@ -93,6 +94,7 @@ public class AtomEffect extends Effect {
             display(particleNucleus, location, colorNucleus);
             location.subtract(v);
         }
+
         for (int i = 0; i < particlesOrbital; i++) {
             double angle = step * angularVelocity;
             for (int j = 0; j < orbitals; j++) {

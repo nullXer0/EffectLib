@@ -92,7 +92,7 @@ public class CircleEffect extends Effect {
 
     @Override
     public void reset() {
-        this.step = 0;
+        step = 0;
     }
 
     @Override
@@ -101,6 +101,7 @@ public class CircleEffect extends Effect {
         location.subtract(xSubtract, ySubtract, zSubtract);
         double inc = maxAngle / particles;
         int steps = wholeCircle ? particles : 1;
+
         for (int i = 0; i < steps; i++) {
             double angle = step * inc;
             Vector v = new Vector();

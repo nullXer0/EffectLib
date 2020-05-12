@@ -12,6 +12,7 @@ import net.objecthunter.exp4j.ExpressionBuilder;
 import net.objecthunter.exp4j.function.Function;
 
 public class EquationTransform implements Transform {
+
     private Expression expression;
     private static Function randFunction;
     private static Function minFunction;
@@ -112,9 +113,7 @@ public class EquationTransform implements Transform {
 
     @Override
     public double get(double t) {
-        if (expression == null) {
-            return 0;
-        }
+        if (expression == null) return 0;
         for (String inputVariable : inputVariables) {
             expression.setVariable(inputVariable, t);
         }
@@ -122,9 +121,7 @@ public class EquationTransform implements Transform {
     }
     
     public double get(double... t) {
-        if (expression == null) {
-            return 0;
-        }
+        if (expression == null) return 0;
         int index = 0;
         for (String inputVariable : inputVariables) {
             expression.setVariable(inputVariable, t[index]);
@@ -138,15 +135,11 @@ public class EquationTransform implements Transform {
     }
 
     public void setVariable(String key, double value) {
-        if (expression != null) {
-            expression.setVariable(key, value);
-        }
+        if (expression != null) expression.setVariable(key, value);
     }
 
     public double get() {
-        if (expression == null) {
-            return Double.NaN;
-        }
+        if (expression == null) return Double.NaN;
         double value = Double.NaN;
         try {
             exception = null;
@@ -168,4 +161,5 @@ public class EquationTransform implements Transform {
     public Collection<String> getParameters() {
         return inputVariables;
     }
+
 }
