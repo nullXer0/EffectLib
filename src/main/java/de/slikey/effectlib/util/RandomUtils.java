@@ -48,7 +48,7 @@ public final class RandomUtils {
     }
 
     public static boolean checkProbability(double probability) {
-        return probability >= 1 ? true : random.nextDouble() < probability;
+        return probability >= 1 || random.nextDouble() < probability;
     }
 
 }

@@ -11,6 +11,7 @@ import org.bukkit.util.Vector;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import de.slikey.effectlib.util.RandomUtils;
 import de.slikey.effectlib.util.DynamicLocation;
 import de.slikey.effectlib.util.RandomUtils;
 
