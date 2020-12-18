@@ -231,6 +231,7 @@ public class EffectManager implements Disposable {
             setField(effect, key, parameters, parameterMap, logContext);
         }
 
+        effect.initialize();
         if (origin != null) {
             effect.setDynamicOrigin(origin);
         }
@@ -343,11 +344,11 @@ public class EffectManager implements Disposable {
         if (effect.callback != null && owningPlugin.isEnabled()) Bukkit.getScheduler().runTask(owningPlugin, effect.callback);
         if (disposeOnTermination && effects.isEmpty()) dispose();
     }
-    
+
     public static List<EffectManager> getManagers() {
         return effectManagers;
     }
-    
+
     public void disposeOnTermination() {
         disposeOnTermination = true;
         if (effects.isEmpty()) dispose();
@@ -494,7 +495,7 @@ public class EffectManager implements Disposable {
             em.dispose();
         }
     }
-    
+
     @Override
     public void dispose() {
         if (disposed) return;
