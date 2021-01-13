@@ -1,6 +1,6 @@
 # CHANGELOG
 
-# 7.0
+# 8.0
 
  - Namespace has changed to com.elmakers.mine.bukkit, now hosted on Maven Central
  - Add EffectManager.enableStackTraces to turn off stack traces in error messages
