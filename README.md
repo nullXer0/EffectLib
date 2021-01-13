@@ -20,11 +20,11 @@ This easy to do with Maven. First, add the elMakers repository:
 
 ```
     <repositories>
-        <repository>
-            <id>github</id>
-            <url>https://maven.pkg.github.com/Slikey/EffectLib</url>
-        </repository>
-<!-- Use this repository if you need snapshot builds -->
+      <repository>
+          <id>Maven Central</id>
+          <url>https://repo1.maven.org/maven2/</url>
+      </repository>
+<!-- Use this repository ONLY if you need snapshot builds -->
         <repository>
             <id>elMakers</id>
             <url>http://maven.elmakers.com/repository/</url>
@@ -36,9 +36,9 @@ Then add the EffectLib dependency:
 
 ```
         <dependency>
-            <groupId>de.slikey</groupId>
+            <groupId>com.elmakers.mine.bukkit</groupId>
             <artifactId>EffectLib</artifactId>
-            <version>6.3</version>
+            <version>7.0</version>
             <scope>compile</scope>
         </dependency>
 
@@ -77,6 +77,17 @@ Then finally add the Maven shade plugin:
 ```
 
 Make sure to change the "shadedPattern" to match the base package of your own plugin
+
+# Gradle
+
+To use EffectLib via gradle just add
+
+```
+implementation 'de.slikey:EffectLib:version'
+```
+
+To your build.gradle file, remember to change version to the latest version, you can find the latest version in the maven area above.
+
 
 # Support
 

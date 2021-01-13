@@ -1,12 +1,30 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>de.slikey</groupId>
+    <groupId>com.elmakers.mine.bukkit</groupId>
     <artifactId>EffectLib</artifactId>
-    <version>6.5-SNAPSHOT</version>
+    <version>7.0</version>
 
     <name>EffectLib</name>
-    <url>http://www.kevin-carstens.de/</url>
+    <description>A library for Bukkit plugins to make complicated particle effects</description>
+    <url>https://github.com/elBukkit/EffectLib/</url>
+
+    <organization>
+        <name>elMakers</name>
+        <url>http://www.elmakers.com/</url>
+    </organization>
+
+    <developers>
+        <developer>
+          <name>Nathan Wolf</name>
+          <email>nathan@elmakers.com</email>
+          <organization>elMakers</organization>
+          <organizationUrl>http://www.elmakers.com</organizationUrl>
+        </developer>
+        <developer>
+          <name>Slikey</name>
+        </developer>
+  </developers>
 
     <licenses>
         <license>
@@ -20,22 +38,21 @@
     </properties>
 
     <scm>
-        <connection>scm:git:git://github.com/Slikey/EffectLib.git</connection>
-        <developerConnection>scm:git:git@github.com:Slikey/EffectLib.git</developerConnection>
-        <url>https://github.com/Slikey/EffectLib/</url>
+        <connection>scm:git:git://github.com/elBukkit/EffectLib.git</connection>
+        <developerConnection>scm:git:git@github.com:elBukkit/EffectLib.git</developerConnection>
+        <url>https://github.com/elBukkit/EffectLib/</url>
         <tag>master</tag>
     </scm>
 
     <distributionManagement>
-       <repository>
-         <id>github</id>
-         <name>EffectLib Apache Maven Packages</name>
-         <url>https://maven.pkg.github.com/Slikey/EffectLib</url>
-       </repository>
         <snapshotRepository>
-            <id>maven.elmakers.com</id>
-            <url>http://maven.elmakers.com/repository/</url>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
     </distributionManagement>
 
     <repositories>
@@ -47,8 +64,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>bukkit</artifactId>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
             <version>1.13-R0.1-SNAPSHOT</version>
             <!-- for testing backwards-compat
             <version>1.9-R0.1-SNAPSHOT</version>
@@ -102,6 +119,66 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+
+            <!-- Generate javadocs -->
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-javadoc-plugin</artifactId>
+              <version>2.9.1</version>
+              <executions>
+                <execution>
+                  <phase>deploy</phase>
+                  <id>attach-javadocs</id>
+                  <goals>
+                    <goal>jar</goal>
+                  </goals>
+                </execution>
+              </executions>
+            </plugin>
+
+            <!-- Release sources alongside the compiled jar -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Sign with GPG -->
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-gpg-plugin</artifactId>
+              <version>1.5</version>
+              <executions>
+                <execution>
+                  <id>sign-artifacts</id>
+                  <phase>deploy</phase>
+                  <goals>
+                    <goal>sign</goal>
+                  </goals>
+                </execution>
+              </executions>
+            </plugin>
+
+            <!-- Deploy to central repository -->
+            <plugin>
+              <groupId>org.sonatype.plugins</groupId>
+              <artifactId>nexus-staging-maven-plugin</artifactId>
+              <version>1.6.7</version>
+              <extensions>true</extensions>
+              <configuration>
+                <serverId>ossrh</serverId>
+                <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                <autoReleaseAfterClose>true</autoReleaseAfterClose>
+              </configuration>
             </plugin>
         </plugins>
 
