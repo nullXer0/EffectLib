@@ -27,6 +27,15 @@ public class ConfigUtils {
     public static ConfigurationSection toConfigurationSection(Map<?, ?> nodeMap) {
         ConfigurationSection newSection = new MemoryConfiguration();
         for (Map.Entry<?, ?> entry : nodeMap.entrySet()) {
+            newSection.set(entry.getKey().toString(), entry.getValue());
+        }
+
+        return newSection;
+    }
+
+    public static ConfigurationSection convertConfigurationSection(Map<?, ?> nodeMap) {
+        ConfigurationSection newSection = new MemoryConfiguration();
+        for (Map.Entry<?, ?> entry : nodeMap.entrySet()) {
             set(newSection, entry.getKey().toString(), entry.getValue());
         }
 
