@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 8.1
+
+ - Support (ignore) leading # on hex colors
+
 # 8.0
 
  - Namespace has changed to com.elmakers.mine.bukkit, now hosted on Maven Central
