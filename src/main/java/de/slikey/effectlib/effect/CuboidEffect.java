@@ -62,6 +62,7 @@ public class CuboidEffect extends Effect {
     public void onRun() {
         Location target = getTarget();
         Location location = getLocation();
+        if (target == null || location == null) return;
         if (!initialized) {
             if (blockSnap) {
                 target = target.getBlock().getLocation();
