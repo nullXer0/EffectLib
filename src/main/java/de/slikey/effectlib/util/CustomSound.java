@@ -161,7 +161,18 @@ public class CustomSound {
 
         if (sound != null) {
             try {
-                sourceLocation.getWorld().playSound(sourceLocation, sound, volume, pitch);
+                if (range > 0) {
+                    int rangeSquared = range * range;
+                    Collection<? extends Player> players = plugin.getServer().getOnlinePlayers();
+                    for (Player player : players) {
+                        Location location = player.getLocation();
+                        if (location.getWorld().equals(sourceLocation.getWorld()) && location.distanceSquared(sourceLocation) <= rangeSquared) {
+                            player.playSound(sourceLocation, sound, volume, pitch);
+                        }
+                    }
+                } else {
+                    sourceLocation.getWorld().playSound(sourceLocation, sound, volume, pitch);
+                }
             } catch (Exception ex) {
                 if (logger != null) {
                     logger.warning("Failed to play sound: " + sound);
