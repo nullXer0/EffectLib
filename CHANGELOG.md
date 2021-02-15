@@ -3,6 +3,7 @@
 # 8.1
 
  - Support (ignore) leading # on hex colors
+ - The duration property now support suffixed formats such as "2m" for 2 minutes, s, m, h are supported.
 
 # 8.0
 
