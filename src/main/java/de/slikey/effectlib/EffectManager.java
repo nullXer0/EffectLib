@@ -70,7 +70,6 @@ public class EffectManager implements Disposable {
         if (owningPlugin == null) {
             throw new IllegalArgumentException("EffectManager must be given a valid owning plugin");
         }
-        ConfigUtils.logger = logger;
         imageCacheFolder = new File(owningPlugin.getDataFolder(), "imagecache");
         this.owningPlugin = owningPlugin;
         this.logger = logger;
@@ -401,11 +400,7 @@ public class EffectManager implements Disposable {
             if (field.getType().equals(Integer.TYPE) || field.getType().equals(Integer.class)) {
                 int intValue = Integer.MAX_VALUE;
                 if (!ConfigUtils.isMaxValue(stringValue)) {
-                    if (key.equals("duration")) {
-                        intValue = (int)ConfigUtils.getInterval(fieldSection, fieldKey);
-                    } else {
-                        intValue = fieldSection.getInt(fieldKey);
-                    }
+                    intValue = fieldSection.getInt(fieldKey);
                 }
                 field.set(effect, intValue);
             } else if (field.getType().equals(Float.TYPE) || field.getType().equals(Float.class)) {
