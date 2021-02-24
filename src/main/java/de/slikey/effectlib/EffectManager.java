@@ -219,6 +219,10 @@ public class EffectManager implements Disposable {
     }
 
     public Effect getEffect(String effectClass, ConfigurationSection parameters, DynamicLocation origin, DynamicLocation target, ConfigurationSection parameterMap, Player targetPlayer) {
+        return getEffect(effectClass, parameters, origin, target, parameterMap, targetPlayer, "Unknown");
+    }
+
+    public Effect getEffect(String effectClass, ConfigurationSection parameters, DynamicLocation origin, DynamicLocation target, ConfigurationSection parameterMap, Player targetPlayer, String logContext) {
         Effect effect = getEffectByClassName(effectClass);
         if (effect == null) {
             return null;
@@ -244,7 +248,7 @@ public class EffectManager implements Disposable {
                 continue;
             }
 
-            setField(effect, key, parameters, parameterMap);
+            setField(effect, key, parameters, parameterMap, logContext);
         }
 
         if (origin != null) {
@@ -378,7 +382,7 @@ public class EffectManager implements Disposable {
         return owningPlugin;
     }
 
-    protected boolean setField(Object effect, String key, ConfigurationSection section, ConfigurationSection parameterMap) {
+    protected boolean setField(Object effect, String key, ConfigurationSection section, ConfigurationSection parameterMap, String logContext) {
         try {
             String stringValue = section.getString(key);
             String fieldKey = key;
@@ -503,13 +507,13 @@ public class EffectManager implements Disposable {
                 String value = fieldSection.getString(fieldKey);
                 field.set(effect, new CustomSound(value));
             } else {
-                onError("Unable to assign EffectLib property " + key + " of class " + effect.getClass().getSimpleName());
+                onError("Unable to assign EffectLib property " + key + " of class " + effect.getClass().getSimpleName() + " in " + logContext);
                 return false;
             }
 
             return true;
         } catch (Exception ex) {
-            onError("Error assigning EffectLib property " + key + " of class " + effect.getClass().getSimpleName() + ": " + ex.getMessage(), ex);
+            onError("Error assigning EffectLib property " + key + " of class " + effect.getClass().getSimpleName() + " in " + logContext + ": " + ex.getMessage(), ex);
         }
 
         return false;
