@@ -45,7 +45,7 @@ public class ImageLoadTask implements Runnable {
 
                 if (!dirsMade) {
                     dirsMade = true;
-                    if (!cacheFolder.mkdirs()) {
+                    if (!cacheFolder.exists() && !cacheFolder.mkdirs()) {
                         effectManager.onError("Could not create cache folder: " + cacheFolder.getAbsolutePath());
                     }
                 }
