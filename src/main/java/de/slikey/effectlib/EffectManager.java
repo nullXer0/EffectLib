@@ -87,6 +87,34 @@ public class EffectManager implements Disposable {
         getDisplay().display(particle, center, offsetX, offsetY, offsetZ, speed, amount, size, color, material, materialData, range, targetPlayers);
     }
 
+    public void start(Effect effect) {
+        if (disposed) throw new IllegalStateException("EffectManager is disposed and not able to accept any effects.");
+        if (disposeOnTermination) throw new IllegalStateException("EffectManager is awaiting termination to dispose and not able to accept any effects.");
+        if (effects.containsKey(effect)) effect.cancel(false);
+        if (!owningPlugin.isEnabled()) return;
+
+        BukkitScheduler s = Bukkit.getScheduler();
+        BukkitTask task = null;
+        switch (effect.getType()) {
+            case INSTANT:
+                if (effect.isAsynchronous()) task = s.runTaskAsynchronously(owningPlugin, effect);
+                else task = s.runTask(owningPlugin, effect);
+                break;
+            case DELAYED:
+                if (effect.isAsynchronous()) task = s.runTaskLaterAsynchronously(owningPlugin, effect, effect.getDelay());
+                else task = s.runTaskLater(owningPlugin, effect, effect.getDelay());
+                break;
+            case REPEATING:
+                if (effect.isAsynchronous()) task = s.runTaskTimerAsynchronously(owningPlugin, effect, effect.getDelay(), effect.getPeriod());
+                else task = s.runTaskTimer(owningPlugin, effect, effect.getDelay(), effect.getPeriod());
+                break;
+        }
+        synchronized (this) {
+            effect.setStartTime(System.currentTimeMillis());
+            effects.put(effect, task);
+        }
+    }
+
     public Effect start(String effectClass, ConfigurationSection parameters, Location origin, Entity originEntity) {
         return start(effectClass, parameters, origin, null, originEntity, null, null);
     }
