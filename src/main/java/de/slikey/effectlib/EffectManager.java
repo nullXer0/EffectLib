@@ -275,6 +275,40 @@ public class EffectManager implements Disposable {
             effect.cancel(callback);
         }
     }
+    
+    public void done(Effect effect) {
+        removeEffect(effect);
+        if (effect.callback != null && owningPlugin.isEnabled()) Bukkit.getScheduler().runTask(owningPlugin, effect.callback);
+        if (disposeOnTermination && effects.isEmpty()) dispose();
+    }
+
+    public void removeEffect(Effect effect) {
+        synchronized (this) {
+            BukkitTask existingTask = effects.get(effect);
+            if (existingTask != null) existingTask.cancel();
+            effects.remove(effect);
+        }
+    }
+
+    @Override
+    public void dispose() {
+        if (disposed) return;
+        disposed = true;
+        cancel(false);
+        effects = null;
+        owningPlugin = null;
+        logger = null;
+        display = null;
+        imageCache = null;
+        owningPlugin = null;
+        imageCacheFolder = null;
+        effectManagers.remove(this);
+    }
+
+    public void disposeOnTermination() {
+        disposeOnTermination = true;
+        if (effects.isEmpty()) dispose();
+    }
 
     public boolean isDisposed() {
         return disposed;
@@ -348,11 +382,6 @@ public class EffectManager implements Disposable {
 
     public static List<EffectManager> getManagers() {
         return effectManagers;
-    }
-
-    public void disposeOnTermination() {
-        disposeOnTermination = true;
-        if (effects.isEmpty()) dispose();
     }
 
     protected boolean setField(Object effect, String key, ConfigurationSection section, ConfigurationSection parameterMap, String logContext) {
@@ -495,21 +524,6 @@ public class EffectManager implements Disposable {
             i.remove();
             em.dispose();
         }
-    }
-
-    @Override
-    public void dispose() {
-        if (disposed) return;
-        disposed = true;
-        cancel(false);
-        effects = null;
-        owningPlugin = null;
-        logger = null;
-        display = null;
-        imageCache = null;
-        owningPlugin = null;
-        imageCacheFolder = null;
-        effectManagers.remove(this);
     }
 
     public void setImageCacheFolder(File folder) {
