@@ -275,7 +275,7 @@ public class EffectManager implements Disposable {
             effect.cancel(callback);
         }
     }
-    
+
     public void done(Effect effect) {
         removeEffect(effect);
         if (effect.callback != null && owningPlugin.isEnabled()) Bukkit.getScheduler().runTask(owningPlugin, effect.callback);
@@ -368,16 +368,6 @@ public class EffectManager implements Disposable {
 
     public Plugin getOwningPlugin() {
         return owningPlugin;
-    }
-
-    public void done(Effect effect) {
-        synchronized (this) {
-            BukkitTask existingTask = effects.get(effect);
-            if (existingTask != null) existingTask.cancel();
-            effects.remove(effect);
-        }
-        if (effect.callback != null && owningPlugin.isEnabled()) Bukkit.getScheduler().runTask(owningPlugin, effect.callback);
-        if (disposeOnTermination && effects.isEmpty()) dispose();
     }
 
     public static List<EffectManager> getManagers() {
