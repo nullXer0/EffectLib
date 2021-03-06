@@ -50,6 +50,12 @@ public class CircleEffect extends Effect {
      */
     public double maxAngle = Math.PI * 2;
 
+    /**
+     * Start at the same location each step, use this
+     * along with maxAngle and wholeCircle to form persistent semicircles
+     */
+    public boolean resetCircle = false;
+
     /*
      * Current step. Works as a counter
      */
@@ -107,6 +113,9 @@ public class CircleEffect extends Effect {
             }
             display(particle, location.clone().add(v), 0, 30);
             step++;
+        }
+        if (resetCircle) {
+            step = 0;
         }
     }
 

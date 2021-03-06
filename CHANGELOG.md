@@ -3,7 +3,7 @@
 # 8.1
 
  - Support (ignore) leading # on hex colors
- - Add maxAngle parameter to Circle effect, for making partial circles
+ - Add maxAngle and resetCircle parameters to Circle effect, for making partial circles
 
 # 8.0
 
