@@ -45,6 +45,11 @@ public class CircleEffect extends Effect {
      */
     public float radius = .4f;
 
+    /**
+     * Used to make a partial circle
+     */
+    public double maxAngle = Math.PI * 2;
+
     /*
      * Current step. Works as a counter
      */
@@ -86,7 +91,7 @@ public class CircleEffect extends Effect {
     public void onRun() {
         Location location = getLocation();
         location.subtract(xSubtract, ySubtract, zSubtract);
-        double inc = (2 * Math.PI) / particles;
+        double inc = maxAngle / particles;
         int steps = wholeCircle ? particles : 1;
         for (int i = 0; i < steps; i++) {
             double angle = step * inc;
