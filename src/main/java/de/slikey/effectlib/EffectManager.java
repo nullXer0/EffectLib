@@ -1,33 +1,33 @@
 package de.slikey.effectlib;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.awt.Font;
+import java.util.List;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.lang.reflect.Field;
 import java.util.logging.Level;
+import java.awt.image.BufferedImage;
+import java.lang.reflect.Constructor;
 import java.util.logging.Logger;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Color;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
+import org.bukkit.util.Vector;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.util.Vector;
+import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.configuration.MemoryConfiguration;
+import org.bukkit.configuration.ConfigurationSection;
 
 import com.google.common.base.CaseFormat;
 
