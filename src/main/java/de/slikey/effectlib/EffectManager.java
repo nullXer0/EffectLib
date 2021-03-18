@@ -47,7 +47,7 @@ import de.slikey.effectlib.util.ParticleDisplay;
  */
 public class EffectManager implements Disposable {
 
-    private static List<EffectManager> effectManagers;
+    private static List<EffectManager> effectManagers = new ArrayList<>();
     private static Map<String, Class<? extends Effect>> effectClasses = new HashMap<>();
     private Plugin owningPlugin;
     private Logger logger;
@@ -85,11 +85,6 @@ public class EffectManager implements Disposable {
 
     public void display(Particle particle, Location center, float offsetX, float offsetY, float offsetZ, float speed, int amount, float size, Color color, Material material, byte materialData, double range, List<Player> targetPlayers) {
         getDisplay().display(particle, center, offsetX, offsetY, offsetZ, speed, amount, size, color, material, materialData, range, targetPlayers);
-    }
-
-    public static List<EffectManager> getManagers() {
-        if (effectManagers == null) initialize();
-        return effectManagers;
     }
 
     public Effect start(String effectClass, ConfigurationSection parameters, Location origin, Entity originEntity) {
@@ -138,15 +133,6 @@ public class EffectManager implements Disposable {
     @Deprecated
     public Effect start(String effectClass, ConfigurationSection parameters, DynamicLocation origin, DynamicLocation target, Map<String, String> parameterMap) {
         return start(effectClass, parameters, origin, target, parameterMap, null);
-    }
-
-    public static void disposeAll() {
-        if (effectManagers == null) return;
-        for (Iterator<EffectManager> i = effectManagers.iterator(); i.hasNext();) {
-            EffectManager em = i.next();
-            i.remove();
-            em.dispose();
-        }
     }
 
     public Effect getEffect(String effectClass, ConfigurationSection parameters, DynamicLocation origin, DynamicLocation target, ConfigurationSection parameterMap, Player targetPlayer) {
@@ -358,26 +344,15 @@ public class EffectManager implements Disposable {
         if (disposeOnTermination && effects.isEmpty()) dispose();
     }
     
-    @Override
-    public void dispose() {
-        if (disposed) return;
-        disposed = true;
-        cancel(false);
-        effects = null;
-        owningPlugin = null;
-        logger = null;
-        display = null;
-        imageCache = null;
-        owningPlugin = null;
-        imageCacheFolder = null;
-        if (effectManagers != null) effectManagers.remove(this);
+    public static List<EffectManager> getManagers() {
+        return effectManagers;
     }
     
     public void disposeOnTermination() {
         disposeOnTermination = true;
         if (effects.isEmpty()) dispose();
     }
-    
+
     protected boolean setField(Object effect, String key, ConfigurationSection section, ConfigurationSection parameterMap, String logContext) {
         try {
             String stringValue = section.getString(key);
@@ -510,6 +485,29 @@ public class EffectManager implements Disposable {
         }
 
         return false;
+    }
+
+    public static void disposeAll() {
+        for (Iterator<EffectManager> i = effectManagers.iterator(); i.hasNext();) {
+            EffectManager em = i.next();
+            i.remove();
+            em.dispose();
+        }
+    }
+    
+    @Override
+    public void dispose() {
+        if (disposed) return;
+        disposed = true;
+        cancel(false);
+        effects = null;
+        owningPlugin = null;
+        logger = null;
+        display = null;
+        imageCache = null;
+        owningPlugin = null;
+        imageCacheFolder = null;
+        effectManagers.remove(this);
     }
 
     public void setImageCacheFolder(File folder) {
