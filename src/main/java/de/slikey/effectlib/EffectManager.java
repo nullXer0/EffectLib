@@ -1,39 +1,6 @@
 package de.slikey.effectlib;
 
-import java.io.File;
-import java.util.Map;
-import java.util.Set;
-import java.awt.Font;
-import java.util.List;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.lang.reflect.Field;
-import java.util.logging.Level;
-import java.awt.image.BufferedImage;
-import java.lang.reflect.Constructor;
-
-import de.slikey.effectlib.util.Disposable;
-import de.slikey.effectlib.util.ConfigUtils;
-import de.slikey.effectlib.util.ImageLoadTask;
-import de.slikey.effectlib.util.ParticleDisplay;
-import de.slikey.effectlib.util.DynamicLocation;
-import de.slikey.effectlib.util.ImageLoadCallback;
-
-import org.bukkit.Color;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.util.Vector;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.util.Vector;
-
-import java.awt.Font;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.lang.reflect.Constructor;
@@ -47,11 +14,30 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.bukkit.scheduler.BukkitScheduler;
-import org.bukkit.configuration.MemoryConfiguration;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.util.Vector;
 
 import com.google.common.base.CaseFormat;
+
+import de.slikey.effectlib.util.ConfigUtils;
+import de.slikey.effectlib.util.CustomSound;
+import de.slikey.effectlib.util.Disposable;
+import de.slikey.effectlib.util.DynamicLocation;
+import de.slikey.effectlib.util.ImageLoadCallback;
+import de.slikey.effectlib.util.ImageLoadTask;
+import de.slikey.effectlib.util.ParticleDisplay;
 
 /**
  * Dispose the EffectManager if you don't need him anymore.
