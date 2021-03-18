@@ -29,7 +29,7 @@ public class ParticleDisplay_12 extends ParticleDisplay {
 
         Object data = null;
         if (particle == Particle.BLOCK_CRACK || particle == Particle.BLOCK_DUST || particle.name().equals("FALLING_DUST")) {
-            if (material == null || material == Material.AIR) return;
+            if (material == null || material.name().contains("AIR")) return;
             data = new MaterialData(material, materialData);
         }
 

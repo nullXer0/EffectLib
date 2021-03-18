@@ -79,12 +79,20 @@ public class EffectManager implements Disposable {
         effectManagers.add(this);
     }
 
-    public static void initialize() {
-        effectManagers = new ArrayList<>();
+    public static List<EffectManager> getManagers() {
+        return effectManagers;
     }
 
     public void display(Particle particle, Location center, float offsetX, float offsetY, float offsetZ, float speed, int amount, float size, Color color, Material material, byte materialData, double range, List<Player> targetPlayers) {
         getDisplay().display(particle, center, offsetX, offsetY, offsetZ, speed, amount, size, color, material, materialData, range, targetPlayers);
+    }
+
+    private ParticleDisplay getDisplay() {
+        if (display == null) display = ParticleDisplay.newInstance();
+
+        display.setManager(this);
+
+        return display;
     }
 
     public Effect start(String effectClass, ConfigurationSection parameters, Location origin, Entity originEntity) {
@@ -135,46 +143,6 @@ public class EffectManager implements Disposable {
         return start(effectClass, parameters, origin, target, parameterMap, null);
     }
 
-    public Effect getEffect(String effectClass, ConfigurationSection parameters, DynamicLocation origin, DynamicLocation target, ConfigurationSection parameterMap, Player targetPlayer) {
-        return getEffect(effectClass, parameters, origin, target, parameterMap, targetPlayer, "Unknown");
-    }
-
-    private ParticleDisplay getDisplay() {
-        if (display == null) display = ParticleDisplay.newInstance();
-
-        display.setManager(this);
-
-        return display;
-    }
-
-    public void start(Effect effect) {
-        if (disposed) throw new IllegalStateException("EffectManager is disposed and not able to accept any effects.");
-        if (disposeOnTermination) throw new IllegalStateException("EffectManager is awaiting termination to dispose and not able to accept any effects.");
-        if (effects.containsKey(effect)) effect.cancel(false);
-        if (!owningPlugin.isEnabled()) return;
-
-        BukkitScheduler s = Bukkit.getScheduler();
-        BukkitTask task = null;
-        switch (effect.getType()) {
-            case INSTANT:
-                if (effect.isAsynchronous()) task = s.runTaskAsynchronously(owningPlugin, effect);
-                else task = s.runTask(owningPlugin, effect);
-                break;
-            case DELAYED:
-                if (effect.isAsynchronous()) task = s.runTaskLaterAsynchronously(owningPlugin, effect, effect.getDelay());
-                else task = s.runTaskLater(owningPlugin, effect, effect.getDelay());
-                break;
-            case REPEATING:
-                if (effect.isAsynchronous()) task = s.runTaskTimerAsynchronously(owningPlugin, effect, effect.getDelay(), effect.getPeriod());
-                else task = s.runTaskTimer(owningPlugin, effect, effect.getDelay(), effect.getPeriod());
-                break;
-        }
-        synchronized (this) {
-            effect.setStartTime(System.currentTimeMillis());
-            effects.put(effect, task);
-        }
-    }
-
     public Effect getEffectByClassName(String effectClass) {
         Class<? extends Effect> effectLibClass;
         try {
@@ -205,6 +173,34 @@ public class EffectManager implements Disposable {
         }
 
         return effect;
+    }
+
+    public void start(Effect effect) {
+        if (disposed) throw new IllegalStateException("EffectManager is disposed and not able to accept any effects.");
+        if (disposeOnTermination) throw new IllegalStateException("EffectManager is awaiting termination to dispose and not able to accept any effects.");
+        if (effects.containsKey(effect)) effect.cancel(false);
+        if (!owningPlugin.isEnabled()) return;
+
+        BukkitScheduler s = Bukkit.getScheduler();
+        BukkitTask task = null;
+        switch (effect.getType()) {
+            case INSTANT:
+                if (effect.isAsynchronous()) task = s.runTaskAsynchronously(owningPlugin, effect);
+                else task = s.runTask(owningPlugin, effect);
+                break;
+            case DELAYED:
+                if (effect.isAsynchronous()) task = s.runTaskLaterAsynchronously(owningPlugin, effect, effect.getDelay());
+                else task = s.runTaskLater(owningPlugin, effect, effect.getDelay());
+                break;
+            case REPEATING:
+                if (effect.isAsynchronous()) task = s.runTaskTimerAsynchronously(owningPlugin, effect, effect.getDelay(), effect.getPeriod());
+                else task = s.runTaskTimer(owningPlugin, effect, effect.getDelay(), effect.getPeriod());
+                break;
+        }
+        synchronized (this) {
+            effect.setStartTime(System.currentTimeMillis());
+            effects.put(effect, task);
+        }
     }
 
     public Effect getEffect(String effectClass, ConfigurationSection parameters, DynamicLocation origin, DynamicLocation target, ConfigurationSection parameterMap, Player targetPlayer, String logContext) {
@@ -370,10 +366,6 @@ public class EffectManager implements Disposable {
         return owningPlugin;
     }
 
-    public static List<EffectManager> getManagers() {
-        return effectManagers;
-    }
-
     protected boolean setField(Object effect, String key, ConfigurationSection section, ConfigurationSection parameterMap, String logContext) {
         try {
             String stringValue = section.getString(key);
@@ -506,6 +498,10 @@ public class EffectManager implements Disposable {
         }
 
         return false;
+    }
+
+    public Effect getEffect(String effectClass, ConfigurationSection parameters, DynamicLocation origin, DynamicLocation target, ConfigurationSection parameterMap, Player targetPlayer) {
+        return getEffect(effectClass, parameters, origin, target, parameterMap, targetPlayer, "Unknown");
     }
 
     public static void disposeAll() {

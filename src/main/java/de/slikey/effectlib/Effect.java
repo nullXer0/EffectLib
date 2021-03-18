@@ -15,7 +15,6 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import de.slikey.effectlib.util.RandomUtils;
 import de.slikey.effectlib.util.DynamicLocation;
-import de.slikey.effectlib.util.RandomUtils;
 
 public abstract class Effect implements Runnable {
 
@@ -25,7 +24,6 @@ public abstract class Effect implements Runnable {
      */
     private String subEffectClass = null;
     public ConfigurationSection subEffect = null;
-
 
     /**
      * Handles the type, the effect is played.
