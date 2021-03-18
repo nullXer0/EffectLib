@@ -1,9 +1,11 @@
 # CHANGELOG
 
-# 8.1
+# 9.0
 
  - Support (ignore) leading # on hex colors
  - Add maxAngle and resetCircle parameters to Circle effect, for making partial circles
+ - Merged with Chronoken's fork, we've teamed up!
+ - Lots of changes and additiosn (that we can hopefully add to the changelog eventually...)
 
 # 8.0
 
