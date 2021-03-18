@@ -102,12 +102,8 @@ public class GridEffect extends Effect {
             v.setX(v.getX() + widthCell * -(columns + 1) / 2);
         }
         VectorUtils.rotateAroundAxisY(v, rotation);
-        if (rotationX != 0) {
-            VectorUtils.rotateAroundAxisX(v, rotationX);
-        }
-        if (rotationZ != 0) {
-            VectorUtils.rotateAroundAxisZ(v, rotationZ);
-        }
+        if (rotationX != 0) VectorUtils.rotateAroundAxisX(v, rotationX);
+        if (rotationZ != 0) VectorUtils.rotateAroundAxisZ(v, rotationZ);
         location.add(v);
         display(particle, location);
         location.subtract(v);

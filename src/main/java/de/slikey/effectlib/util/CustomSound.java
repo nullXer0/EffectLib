@@ -68,12 +68,24 @@ public class CustomSound {
         }
     }
 
-    public void stop(Player player) {
-        if (sound != null) {
-            stopSound(null, player, sound);
-        }
-        if (customSound != null && !customSound.isEmpty()) {
-            stopSound(null, player, customSound);
+    private static void initializeReflection(Logger logger) {
+        if (!initializedReflection) {
+            initializedReflection = true;
+            try {
+                player_playCustomSoundMethod = Player.class.getMethod("playSound", Location.class, String.class, Float.TYPE, Float.TYPE);
+            } catch (Exception ex) {
+				if (logger != null) logger.warning("Failed to bind to custom sound method");
+            }
+            try {
+                player_stopCustomSoundMethod = Player.class.getMethod("stopSound", String.class);
+            } catch (Exception ex) {
+				if (logger != null) logger.warning("Failed to bind to stop custom sound method");
+            }
+            try {
+                player_stopSoundMethod = Player.class.getMethod("stopSound", Sound.class);
+            } catch (Exception ex) {
+				if (logger != null) logger.warning("Failed to bind to stop sound method");
+            }
         }
     }
 
@@ -105,12 +117,9 @@ public class CustomSound {
         this.pitch = pitch;
     }
 
-    public String toString() {
-        String soundName = sound == null ? customSound : sound.name();
-        if (soundName == null) {
-            return "";
-        }
-        return soundName + "," + volume + "," + pitch + "," + range;
+    public void stop(Player player) {
+		if (sound != null) stopSound(null, player, sound);
+		if (customSound != null && !customSound.isEmpty()) stopSound(null, player, customSound);
     }
 
     public int hashCode() {
@@ -234,31 +243,10 @@ public class CustomSound {
         this.range = range;
     }
 
-    private static void initializeReflection(Logger logger) {
-        if (!initializedReflection) {
-            initializedReflection = true;
-            try {
-                player_playCustomSoundMethod = Player.class.getMethod("playSound", Location.class, String.class, Float.TYPE, Float.TYPE);
-            } catch (Exception ex) {
-                if (logger != null) {
-                    logger.warning("Failed to bind to custom sound method");
-                }
-            }
-            try {
-                player_stopCustomSoundMethod = Player.class.getMethod("stopSound", String.class);
-            } catch (Exception ex) {
-                if (logger != null) {
-                    logger.warning("Failed to bind to stop custom sound method");
-                }
-            }
-            try {
-                player_stopSoundMethod = Player.class.getMethod("stopSound", Sound.class);
-            } catch (Exception ex) {
-                if (logger != null) {
-                    logger.warning("Failed to bind to stop sound method");
-                }
-            }
-        }
+    public String toString() {
+        String soundName = sound == null ? customSound : sound.name();
+		if (soundName == null) return "";
+        return soundName + "," + volume + "," + pitch + "," + range;
     }
 
     public static void stopSound(Logger logger, Player player, String sound) {
@@ -296,4 +284,5 @@ public class CustomSound {
             }
         }
     }
+
 }

@@ -13,6 +13,26 @@ public class SequenceTransform implements Transform {
 
     private List<Sequence> steps;
 
+    private static class Sequence {
+
+        private final Transform transform;
+        private final double start;
+
+        public Sequence(ConfigurationSection configuration) {
+            transform = Transforms.loadTransform(configuration, "transform");
+            start = configuration.getDouble("start", 0);
+        }
+
+        public double getStart() {
+            return start;
+        }
+
+        public double get(double t) {
+            return transform.get(t);
+        }
+
+    }
+
     @Override
     public void load(ConfigurationSection parameters) {
         steps = new ArrayList<>();
@@ -32,26 +52,6 @@ public class SequenceTransform implements Transform {
             if (step.getStart() <= t) return step.get(t);
         }
         return value;
-    }
-
-    private static class Sequence {
-
-        private final Transform transform;
-        private final double start;
-
-        public Sequence(ConfigurationSection configuration) {
-            transform = Transforms.loadTransform(configuration, "transform");
-            start = configuration.getDouble("start", 0);
-        }
-
-        public double getStart() {
-            return start;
-        }
-
-        public double get(double t) {
-            return transform.get(t);
-        }
-
     }
 
 }

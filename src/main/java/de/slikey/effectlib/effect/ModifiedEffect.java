@@ -18,7 +18,6 @@ import de.slikey.effectlib.EffectManager;
 import de.slikey.effectlib.util.VectorUtils;
 import de.slikey.effectlib.math.EquationStore;
 import de.slikey.effectlib.math.EquationTransform;
-import de.slikey.effectlib.util.VectorUtils;
 
 public class ModifiedEffect extends Effect {
     private final static String[] _variables = {"t", "i", "a", "b"};

@@ -229,9 +229,7 @@ public class EffectManager implements Disposable {
         }
 
         effect.initialize();
-        if (origin != null) {
-            effect.setDynamicOrigin(origin);
-        }
+        if (origin != null) effect.setDynamicOrigin(origin);
         effect.setDynamicTarget(target);
 
         if (targetPlayer != null) effect.setTargetPlayer(targetPlayer);
@@ -330,10 +328,8 @@ public class EffectManager implements Disposable {
         getLogger().log(Level.SEVERE, "Unexpected EffectLib Error: " + ex.getMessage(), ex);
     }
 
-    public void onError(String message) {
-        if (debug) {
-            getLogger().log(Level.WARNING, message);
-        }
+    public Effect getEffect(String effectClass, ConfigurationSection parameters, DynamicLocation origin, DynamicLocation target, ConfigurationSection parameterMap, Player targetPlayer) {
+        return getEffect(effectClass, parameters, origin, target, parameterMap, targetPlayer, "Unknown");
     }
 
     public void onError(String message, Throwable ex) {
@@ -366,6 +362,10 @@ public class EffectManager implements Disposable {
         return owningPlugin;
     }
 
+    public void onError(String message) {
+        if (debug) getLogger().log(Level.WARNING, message);
+    }
+
     protected boolean setField(Object effect, String key, ConfigurationSection section, ConfigurationSection parameterMap, String logContext) {
         try {
             String stringValue = section.getString(key);
@@ -384,57 +384,43 @@ public class EffectManager implements Disposable {
             Field field = effect.getClass().getField(key);
             if (field.getType().equals(Integer.TYPE) || field.getType().equals(Integer.class)) {
                 int intValue = Integer.MAX_VALUE;
-                if (!ConfigUtils.isMaxValue(stringValue)) {
-                    intValue = fieldSection.getInt(fieldKey);
-                }
+                if (!ConfigUtils.isMaxValue(stringValue)) intValue = fieldSection.getInt(fieldKey);
                 field.set(effect, intValue);
             } else if (field.getType().equals(Float.TYPE) || field.getType().equals(Float.class)) {
                 float floatValue = Float.MAX_VALUE;
-                if (!ConfigUtils.isMaxValue(stringValue)) {
-                    floatValue = (float)fieldSection.getDouble(fieldKey);
-                }
+                if (!ConfigUtils.isMaxValue(stringValue)) floatValue = (float) fieldSection.getDouble(fieldKey);
                 field.set(effect,floatValue);
             } else if (field.getType().equals(Double.TYPE) || field.getType().equals(Double.class)) {
                 double doubleValue = Double.MAX_VALUE;
-                if (!ConfigUtils.isMaxValue(stringValue)) {
-                    doubleValue = fieldSection.getDouble(fieldKey);
-                }
+                if (!ConfigUtils.isMaxValue(stringValue)) doubleValue = fieldSection.getDouble(fieldKey);
                 field.set(effect, doubleValue);
             } else if (field.getType().equals(Boolean.TYPE) || field.getType().equals(Boolean.class)) {
                 field.set(effect, fieldSection.getBoolean(fieldKey));
             } else if (field.getType().equals(Long.TYPE) || field.getType().equals(Long.class)) {
                 long longValue = Long.MAX_VALUE;
-                if (!ConfigUtils.isMaxValue(stringValue)) {
-                    longValue = fieldSection.getLong(fieldKey);
-                }
+                if (!ConfigUtils.isMaxValue(stringValue)) longValue = fieldSection.getLong(fieldKey);
                 field.set(effect, longValue);
             } else if (field.getType().equals(Short.TYPE) || field.getType().equals(Short.class)) {
                 short shortValue = Short.MAX_VALUE;
-                if (!ConfigUtils.isMaxValue(stringValue)) {
-                    shortValue = (short)fieldSection.getInt(fieldKey);
-                }
+                if (!ConfigUtils.isMaxValue(stringValue)) shortValue = (short) fieldSection.getInt(fieldKey);
                 field.set(effect, shortValue);
             } else if (field.getType().equals(Byte.TYPE) || field.getType().equals(Byte.class)) {
                 byte byteValue = Byte.MAX_VALUE;
-                if (!ConfigUtils.isMaxValue(stringValue)) {
-                    byteValue = (byte)fieldSection.getInt(fieldKey);
-                }
+                if (!ConfigUtils.isMaxValue(stringValue)) byteValue = (byte) fieldSection.getInt(fieldKey);
                 field.set(effect, byteValue);
             } else if (field.getType().equals(String.class)) {
                 String value = fieldSection.getString(fieldKey);
                 field.set(effect, value);
             } else if (field.getType().equals(Color.class)) {
                 String value = fieldSection.getString(fieldKey);
-                Integer rgb = null;
+                    Integer rgb;
                 if (value.equalsIgnoreCase("random")) {
                     byte red =  (byte)(Math.random() * 255);
                     byte green =  (byte)(Math.random() * 255);
                     byte blue  =  (byte)(Math.random() * 255);
                     rgb = (red << 16) | (green << 8) | blue;
                 } else {
-                    if (value.startsWith("#")) {
-                        value = value.substring(1);
-                    }
+                        if (value.startsWith("#")) value = value.substring(1);
                     rgb = Integer.parseInt(value, 16);
                 }
                 Color color = Color.fromRGB(rgb);
@@ -498,10 +484,6 @@ public class EffectManager implements Disposable {
         }
 
         return false;
-    }
-
-    public Effect getEffect(String effectClass, ConfigurationSection parameters, DynamicLocation origin, DynamicLocation target, ConfigurationSection parameterMap, Player targetPlayer) {
-        return getEffect(effectClass, parameters, origin, target, parameterMap, targetPlayer, "Unknown");
     }
 
     public static void disposeAll() {

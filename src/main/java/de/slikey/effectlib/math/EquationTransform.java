@@ -27,7 +27,7 @@ public class EquationTransform implements Transform {
     }
 
     public EquationTransform() {
-        inputVariables = new ArrayList<String>();
+        inputVariables = new ArrayList<>();
     }
     
     public EquationTransform(String equation) {
@@ -35,13 +35,13 @@ public class EquationTransform implements Transform {
     }
 
     public EquationTransform(String equation, String inputVariable) {
-        inputVariables = new ArrayList<String>();
+        inputVariables = new ArrayList<>();
         inputVariables.add(inputVariable);
         setEquation(equation);
     }
 
     public EquationTransform(String equation, String... inputVariables) {
-        this.inputVariables = new ArrayList<String>();
+        this.inputVariables = new ArrayList<>();
         for (String inputVariable : inputVariables) {
             this.inputVariables.add(inputVariable);
         }
@@ -114,6 +114,7 @@ public class EquationTransform implements Transform {
     @Override
     public double get(double t) {
         if (expression == null) return 0;
+
         for (String inputVariable : inputVariables) {
             expression.setVariable(inputVariable, t);
         }
@@ -122,6 +123,7 @@ public class EquationTransform implements Transform {
     
     public double get(double... t) {
         if (expression == null) return 0;
+
         int index = 0;
         for (String inputVariable : inputVariables) {
             expression.setVariable(inputVariable, t[index]);
@@ -140,6 +142,7 @@ public class EquationTransform implements Transform {
 
     public double get() {
         if (expression == null) return Double.NaN;
+
         double value = Double.NaN;
         try {
             exception = null;
