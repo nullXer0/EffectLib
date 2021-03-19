@@ -4,8 +4,17 @@
 
  - Support (ignore) leading # on hex colors
  - Add maxAngle and resetCircle parameters to Circle effect, for making partial circles
- - Merged with Chronoken's fork, we've teamed up!
- - Lots of changes and additiosn (that we can hopefully add to the changelog eventually...)
+ - Merged with Chronoken's fork, we've teamed up:
+   - Fix potential memory leaks with effect tasks
+   - Fix support for block_crack, block_dust and falling_dust particles in 1.13
+   - Fix rotation of several effects: Circle, Donut, Heart
+   - Allow orienting additional effects: Atom
+   - Added Square effect
+   - Optimizations
+   - Added "colors" list to all effects, supporting randomized colors from a set of choices
+   - Added Line effect parameters: zigZagRelativeOffset, subEffectAtEnd
+   - Added subEffectClass and subEffect parameters to all Effecs, this lets you play an entire
+     effect in place of single particles for a given effect
 
 # 8.0
 
