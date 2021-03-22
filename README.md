@@ -83,7 +83,7 @@ Make sure to change the "shadedPattern" to match the base package of your own pl
 To use EffectLib via gradle just add
 
 ```
-implementation 'de.slikey:EffectLib:version'
+implementation 'com.elmakers.mine.bukkit:EffectLib:8.0'
 ```
 
 To your build.gradle file, remember to change version to the latest version, you can find the latest version in the maven area above.
