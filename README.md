@@ -38,7 +38,7 @@ Then add the EffectLib dependency:
         <dependency>
             <groupId>com.elmakers.mine.bukkit</groupId>
             <artifactId>EffectLib</artifactId>
-            <version>8.0</version>
+            <version>9.0</version>
             <scope>compile</scope>
         </dependency>
 
