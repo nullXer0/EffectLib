@@ -2,6 +2,8 @@
 
 # 9.1
 
+ - Fix issues with concurrent uses of the same EquationEffect
+
 # 9.0
 
  - Support (ignore) leading # on hex colors
