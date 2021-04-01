@@ -112,7 +112,7 @@ public class EquationTransform implements Transform {
     }
 
     @Override
-    public double get(double t) {
+    public synchronized double get(double t) {
         if (expression == null) return 0;
 
         for (String inputVariable : inputVariables) {
@@ -121,7 +121,7 @@ public class EquationTransform implements Transform {
         return get();
     }
     
-    public double get(double... t) {
+    public synchronized double get(double... t) {
         if (expression == null) return 0;
 
         int index = 0;
@@ -140,6 +140,9 @@ public class EquationTransform implements Transform {
         if (expression != null) expression.setVariable(key, value);
     }
 
+    // Note that this call is *not* synchronized, synchronization here would be up to the caller
+    // and would need to be done inside a block that also includes the setVariable calls.
+    // EffectLib does not use this method as of this time.
     public double get() {
         if (expression == null) return Double.NaN;
 
