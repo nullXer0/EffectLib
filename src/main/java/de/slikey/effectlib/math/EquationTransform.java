@@ -9,6 +9,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
+import net.objecthunter.exp4j.VariableProvider;
 import net.objecthunter.exp4j.function.Function;
 
 public class EquationTransform implements Transform {
@@ -109,6 +110,12 @@ public class EquationTransform implements Transform {
         }
         
         return exception == null;
+    }
+
+    public void setVariableProvider(VariableProvider provider) {
+        if (expression != null) {
+            expression.setVariableProvider(provider);
+        }
     }
 
     @Override
