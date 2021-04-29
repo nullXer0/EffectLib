@@ -12,7 +12,7 @@ import net.objecthunter.exp4j.ExpressionBuilder;
 import net.objecthunter.exp4j.VariableProvider;
 import net.objecthunter.exp4j.function.Function;
 
-public class EquationTransform implements Transform {
+public class EquationTransform implements Transform, VariableProvider {
 
     private Expression expression;
     private static Function randFunction;
@@ -20,6 +20,7 @@ public class EquationTransform implements Transform {
     private static Function maxFunction;
     private static Function selectFunction;
     private final Collection<String> inputVariables;
+    private EquationVariableProvider variableProvider;
     private Exception exception;
 
     @Override
@@ -104,18 +105,13 @@ public class EquationTransform implements Transform {
                 .function(selectFunction)
                 .variables(new HashSet<String>(inputVariables))
                 .build();
+            expression.setVariableProvider(this);
         } catch (Exception ex) {
             expression = null;
             exception = ex;
         }
         
         return exception == null;
-    }
-
-    public void setVariableProvider(VariableProvider provider) {
-        if (expression != null) {
-            expression.setVariableProvider(provider);
-        }
     }
 
     @Override
@@ -175,4 +171,12 @@ public class EquationTransform implements Transform {
         return inputVariables;
     }
 
+    public void setVariableProvider(EquationVariableProvider provider) {
+        variableProvider = provider;
+    }
+
+    @Override
+    public Double getVariable(String variable) {
+        return variableProvider == null ? null : variableProvider.getVariable(variable);
+    }
 }
