@@ -46,7 +46,9 @@ public class ImageLoadTask implements Runnable {
 
                 if (!dirsMade) {
                     dirsMade = true;
-                    if (!cacheFolder.mkdirs()) effectManager.onError("Could not create cache folder: " + cacheFolder.getAbsolutePath());
+                    if (!cacheFolder.exists() && !cacheFolder.mkdirs()) {
+                        effectManager.onError("Could not create cache folder: " + cacheFolder.getAbsolutePath());
+                    }
                 }
 
                 String cacheFileName = URLEncoder.encode(fileName, "UTF-8");
